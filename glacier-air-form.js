@@ -62,11 +62,15 @@ function gaClickNativeContinue() {
             document.querySelector(".btn-schedule") ||
             document.querySelector(".btn.btn-schedule");
   if (btn) {
-    btn.style.removeProperty("display");
-    btn.style.removeProperty("visibility");
-    btn.style.removeProperty("pointer-events");
-    btn.click();
-    setTimeout(gaHideNativeContinue, 500);
+    /* Force visible with !important to override HL stylesheet rules */
+    btn.style.setProperty("display", "block", "important");
+    btn.style.setProperty("visibility", "visible", "important");
+    btn.style.setProperty("pointer-events", "auto", "important");
+    btn.style.setProperty("opacity", "1", "important");
+    setTimeout(function () {
+      btn.click();
+      setTimeout(gaHideNativeContinue, 600);
+    }, 150);
     return true;
   }
   return false;
@@ -816,3 +820,12 @@ function gaClickNativeContinue() {
     (function retry() { t++; if (byName(SERVICES_NAME) && initServiceStep()) return; if (t < 80) setTimeout(retry, 100); })();
   })();
 })();
+
+/* ── Listen for reset message from parent page (Back button) ── */
+window.addEventListener("message", function (event) {
+  var data = event.data;
+  if (!data || data.source !== "glacier-air-page") return;
+  if (data.type === "ga:reset") {
+    window.__gaResetServiceSelection && window.__gaResetServiceSelection();
+  }
+});
