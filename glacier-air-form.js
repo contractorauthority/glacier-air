@@ -92,20 +92,25 @@ function gaClickNativeContinue() {
   var css = document.createElement("style");
   css.id = "ga-shared-styles";
   css.innerHTML =
-    ".ga-step-label{display:inline-flex;align-items:center;gap:7px;margin:0 0 10px;padding:5px 13px 5px 8px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;}" +
+    /* Step badge pill */
+    ".ga-step-label{display:inline-flex;align-items:center;gap:7px;margin:0 0 8px;padding:5px 14px 5px 6px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;max-width:fit-content;}" +
     ".ga-step-label.active{background:#1B4F72;color:#fff;}" +
     ".ga-step-label.done{background:rgba(30,132,73,.12);color:#1E8449;border:1px solid rgba(30,132,73,.2);}" +
-    ".ga-step-dot{width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;}" +
+    ".ga-step-dot{width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;}" +
     ".ga-step-label.active .ga-step-dot{background:rgba(255,255,255,.25);}" +
     ".ga-step-label.done .ga-step-dot{background:#1E8449;color:#fff;}" +
-    ".ga-step-section{margin-bottom:4px;}" +
-    ".ga-instruction{margin:0 0 12px;padding:11px 14px;border-radius:10px;background:rgba(27,79,114,.05);border:1px solid rgba(27,79,114,.12);font-size:13px;line-height:1.6;color:#1B4F72;font-weight:600;}" +
-    ".ga-card{margin:0 0 14px;padding:16px 18px;border-radius:12px;font-size:14px;line-height:1.55;text-align:left;border:1px solid rgba(0,0,0,.07);box-shadow:0 10px 24px rgba(0,0,0,.06);transition:background .25s,border-color .25s;}" +
-    ".ga-card.red{background:rgba(192,57,43,.07);color:#111;border-color:rgba(192,57,43,.15);}" +
-    ".ga-card.green{background:rgba(30,132,73,.08);color:#111;border-color:rgba(30,132,73,.15);}" +
-    ".ga-card.blue{background:rgba(27,79,114,.07);color:#111;border-color:rgba(27,79,114,.15);}" +
-    ".ga-card-title{font-size:16px;font-weight:800;margin:0 0 7px;color:#111;}" +
-    ".ga-card-body{font-size:14px;line-height:1.65;margin:0;color:#333;}" +
+    ".ga-step-section{margin-bottom:6px;}" +
+    /* Instruction box — lighter, smaller on mobile */
+    ".ga-instruction{margin:0 0 10px;padding:9px 12px;border-radius:8px;background:rgba(27,79,114,.04);border:1px solid rgba(27,79,114,.10);font-size:12px;line-height:1.55;color:#1B4F72;font-weight:500;}" +
+    "@media(min-width:481px){.ga-instruction{font-size:13px;padding:11px 14px;}}" +
+    /* Status cards */
+    ".ga-card{margin:0 0 12px;padding:14px 16px;border-radius:12px;font-size:14px;line-height:1.5;text-align:left;border:1px solid rgba(0,0,0,.07);box-shadow:0 6px 18px rgba(0,0,0,.05);transition:background .25s,border-color .25s;}" +
+    ".ga-card.red{background:rgba(192,57,43,.06);color:#111;border-color:rgba(192,57,43,.15);}" +
+    ".ga-card.green{background:rgba(30,132,73,.07);color:#111;border-color:rgba(30,132,73,.15);}" +
+    ".ga-card.blue{background:rgba(27,79,114,.06);color:#111;border-color:rgba(27,79,114,.15);}" +
+    ".ga-card-title{font-size:15px;font-weight:800;margin:0 0 5px;color:#111;}" +
+    ".ga-card-body{font-size:13px;line-height:1.6;margin:0;color:#444;}" +
+    "@media(min-width:481px){.ga-card-title{font-size:16px;}.ga-card-body{font-size:14px;}}" +
     ".ga-link{background:transparent;border:0;padding:0;color:#1B4F72;cursor:pointer;font-weight:700;border-bottom:1px solid rgba(27,79,114,.3);font-size:13px;}" +
     ".ga-link:hover{border-bottom-color:rgba(27,79,114,.6);}" +
     ".ga-collapsed{display:none !important;}";
@@ -400,8 +405,8 @@ function gaClickNativeContinue() {
       card.id = "ga-addr-card";
       card.className = "ga-card red";
       card.innerHTML =
-        '<div id="ga-addr-title" class="ga-card-title">📍 Enter your service address</div>' +
-        '<div id="ga-addr-body" class="ga-card-body">Type your street address above, then <strong>tap your property in the Google dropdown</strong> to confirm it.</div>' +
+        '<div id="ga-addr-title" class="ga-card-title">📍 Service address</div>' +
+        '<div id="ga-addr-body" class="ga-card-body">Start typing below, then <strong>select your property from the Google dropdown</strong> to confirm.</div>' +
         '<button type="button" id="ga-addr-open-btn" class="ga-addr-open-btn" style="display:none">📍 Tap here to open Google Maps dropdown</button>' +
         '<div id="ga-addr-confirmed-box" class="ga-addr-confirmed-box" style="display:none"></div>' +
         '<div id="ga-addr-actions" class="ga-addr-actions" style="display:none">' +
@@ -459,8 +464,8 @@ function gaClickNativeContinue() {
       input.classList.remove("ga-addr-input-pulse");
       input.classList.add("ga-addr-input-empty");
       setCard("red",
-        "📍 Step 2 — Enter your service address",
-        "👇 Start typing your street address in the field below, then <strong>select your property from the Google dropdown</strong> to confirm.",
+        "📍 Service address",
+        "Start typing below, then <strong>select your property from the Google dropdown</strong> to confirm.",
         false);
       setBadge("active");
     }
@@ -586,14 +591,25 @@ function gaClickNativeContinue() {
   var PATH_B = ["New System Installation", "Duct Cleaning", "UV Light Installation", "HVAC Membership Plan"];
   var PATH_C = ["AC Repair & Maintenance", "24/7 Emergency Service"];
 
+  /* SVG icons — inline, consistent across all devices */
+  var SVG_ICONS = {
+    tuneup:    '<svg viewBox="0 0 24 24" fill="none" stroke="#1E8449" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>',
+    install:   '<svg viewBox="0 0 24 24" fill="none" stroke="#1B4F72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/><circle cx="17" cy="8" r="2"/><path d="M17 10v2m-1-1h2"/></svg>',
+    repair:    '<svg viewBox="0 0 24 24" fill="none" stroke="#1B4F72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+    duct:      '<svg viewBox="0 0 24 24" fill="none" stroke="#1B4F72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>',
+    uv:        '<svg viewBox="0 0 24 24" fill="none" stroke="#1B4F72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>',
+    member:    '<svg viewBox="0 0 24 24" fill="none" stroke="#1B4F72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>',
+    emergency: '<svg viewBox="0 0 24 24" fill="none" stroke="#C0392B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'
+  };
+
   var SERVICE_CARDS = [
-    { label: "🌿 Spring AC Tune-Up",      value: "Spring AC Tune-Up",      path: "a" },
-    { label: "🏠 New System Installation", value: "New System Installation", path: "b" },
-    { label: "🔧 AC Repair & Maintenance", value: "AC Repair & Maintenance", path: "c" },
-    { label: "🌀 Duct Cleaning",           value: "Duct Cleaning",           path: "b" },
-    { label: "☀️ UV Light Installation",   value: "UV Light Installation",   path: "b" },
-    { label: "💳 HVAC Membership Plan",    value: "HVAC Membership Plan",    path: "b" },
-    { label: "🚨 24/7 Emergency Service",  value: "24/7 Emergency Service",  path: "c" }
+    { icon: SVG_ICONS.tuneup,    iconColor: "green", label: "Spring AC Tune-Up",      value: "Spring AC Tune-Up",      path: "a" },
+    { icon: SVG_ICONS.install,   iconColor: "blue",  label: "New System Installation", value: "New System Installation", path: "b" },
+    { icon: SVG_ICONS.repair,    iconColor: "blue",  label: "AC Repair & Maintenance", value: "AC Repair & Maintenance", path: "c" },
+    { icon: SVG_ICONS.duct,      iconColor: "blue",  label: "Duct Cleaning",           value: "Duct Cleaning",           path: "b" },
+    { icon: SVG_ICONS.uv,        iconColor: "blue",  label: "UV Light Installation",   value: "UV Light Installation",   path: "b" },
+    { icon: SVG_ICONS.member,    iconColor: "blue",  label: "HVAC Membership Plan",    value: "HVAC Membership Plan",    path: "b" },
+    { icon: SVG_ICONS.emergency, iconColor: "red",   label: "24/7 Emergency Service",  value: "24/7 Emergency Service",  path: "c" }
   ];
 
   function byName(n) { return document.querySelector('[name="' + n + '"]'); }
@@ -620,22 +636,35 @@ function gaClickNativeContinue() {
     css.id = "ga-service-styles";
     css.innerHTML =
       "#ga-service-section{display:none;margin-top:4px;}" +
+      /* 2-col on desktop, 1-col on mobile */
       ".ga-svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}" +
-      "@media(max-width:480px){.ga-svc-grid{grid-template-columns:1fr;}}" +
-      ".ga-svc-card{padding:14px 16px;border-radius:12px;border:2px solid rgba(0,0,0,.10);background:#fff;cursor:pointer;font-size:14px;font-weight:700;color:#111;text-align:left;transition:all .18s;box-shadow:0 4px 12px rgba(0,0,0,.05);line-height:1.4;}" +
-      ".ga-svc-card:hover{border-color:#1B4F72;background:rgba(27,79,114,.04);box-shadow:0 8px 20px rgba(0,0,0,.09);transform:translateY(-1px);}" +
-      ".ga-svc-card.sel-a{border-color:#1E8449 !important;background:rgba(30,132,73,.08) !important;}" +
-      ".ga-svc-card.sel-b{border-color:#1B4F72 !important;background:rgba(27,79,114,.08) !important;}" +
-      ".ga-svc-card.sel-c{border-color:#C0392B !important;background:rgba(192,57,43,.08) !important;}" +
+      "@media(max-width:520px){.ga-svc-grid{grid-template-columns:1fr;gap:8px;}}" +
+      /* Service card base */
+      ".ga-svc-card{display:flex;align-items:center;gap:12px;min-height:60px;padding:12px 14px;border-radius:12px;border:2px solid rgba(0,0,0,.09);background:#fff;cursor:pointer;font-size:14px;font-weight:700;color:#111;text-align:left;transition:all .18s;box-shadow:0 2px 8px rgba(0,0,0,.04);line-height:1.3;width:100%;box-sizing:border-box;}" +
+      ".ga-svc-card:hover{border-color:#1B4F72;background:rgba(27,79,114,.03);box-shadow:0 6px 18px rgba(0,0,0,.08);transform:translateY(-1px);}" +
+      ".ga-svc-card:active{transform:scale(.98);}" +
+      /* Selected states */
+      ".ga-svc-card.sel-a{border-color:#1E8449 !important;background:rgba(30,132,73,.07) !important;}" +
+      ".ga-svc-card.sel-b{border-color:#1B4F72 !important;background:rgba(27,79,114,.07) !important;}" +
+      ".ga-svc-card.sel-c{border-color:#C0392B !important;background:rgba(192,57,43,.07) !important;}" +
+      /* SVG icon badge */
+      ".ga-svc-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}" +
+      ".ga-svc-icon.green{background:rgba(30,132,73,.12);}" +
+      ".ga-svc-icon.blue{background:rgba(27,79,114,.10);}" +
+      ".ga-svc-icon.red{background:rgba(192,57,43,.10);}" +
+      ".ga-svc-icon svg{width:20px;height:20px;}" +
+      ".ga-svc-label{flex:1;line-height:1.35;}" +
+      /* Path output */
       "#ga-path-output{margin-top:4px;}" +
       ".ga-help-wrap{margin-bottom:14px;}" +
       ".ga-help-wrap label{display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px;}" +
       ".ga-help-textarea{width:100%;min-height:90px;padding:12px 14px;border-radius:12px;border:2px solid rgba(0,0,0,.12);font-size:14px;line-height:1.55;color:#111;background:#fff;resize:vertical;font-family:inherit;box-sizing:border-box;outline:none;transition:border-color .2s;}" +
       ".ga-help-textarea:focus{border-color:#1B4F72;}" +
-      ".ga-submit-btn{display:block;width:100%;padding:17px 20px;border-radius:12px;border:none;font-size:16px;font-weight:800;cursor:pointer;text-align:center;letter-spacing:.2px;transition:all .2s;margin-bottom:10px;}" +
-      ".ga-submit-btn.green{background:#1E8449;color:#fff;box-shadow:0 8px 22px rgba(30,132,73,.35);}" +
+      ".ga-submit-btn{display:block;width:100%;padding:16px 20px;border-radius:12px;border:none;font-size:15px;font-weight:800;cursor:pointer;text-align:center;letter-spacing:.2px;transition:all .2s;margin-bottom:10px;}" +
+      "@media(min-width:481px){.ga-submit-btn{font-size:16px;padding:17px 20px;}}" +
+      ".ga-submit-btn.green{background:#1E8449;color:#fff;box-shadow:0 8px 22px rgba(30,132,73,.30);}" +
       ".ga-submit-btn.green:hover{background:#176339;transform:translateY(-1px);}" +
-      ".ga-submit-btn.blue{background:#1B4F72;color:#fff;box-shadow:0 8px 22px rgba(27,79,114,.35);}" +
+      ".ga-submit-btn.blue{background:#1B4F72;color:#fff;box-shadow:0 8px 22px rgba(27,79,114,.30);}" +
       ".ga-submit-btn.blue:hover{background:#154060;transform:translateY(-1px);}" +
       ".ga-submit-btn:active{transform:scale(.99);}";
     document.head.appendChild(css);
@@ -751,7 +780,10 @@ function gaClickNativeContinue() {
 
       var gridHTML = '<div class="ga-svc-grid" id="ga-svc-grid">';
       SERVICE_CARDS.forEach(function (svc) {
-        gridHTML += '<button type="button" class="ga-svc-card" data-value="' + svc.value + '" data-path="' + svc.path + '">' + svc.label + '</button>';
+        gridHTML += '<button type="button" class="ga-svc-card" data-value="' + svc.value + '" data-path="' + svc.path + '">' +
+          '<span class="ga-svc-icon ' + svc.iconColor + '">' + svc.icon + '</span>' +
+          '<span class="ga-svc-label">' + svc.label + '</span>' +
+        '</button>';
       });
       gridHTML += '</div>';
 
