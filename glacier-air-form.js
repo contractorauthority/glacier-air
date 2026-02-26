@@ -42,6 +42,46 @@ function gaSendToParent(type, payload) {
   } catch (e) {}
 }
 
+/* ── Hide native HL Continue button (it's in THIS iframe) ── */
+function gaHideNativeContinue() {
+  var btn = document.getElementById("schedule-meeting-button") ||
+            document.querySelector(".btn-schedule") ||
+            document.querySelector(".btn.btn-schedule");
+  if (btn) {
+    btn.style.setProperty("display", "none", "important");
+    btn.style.setProperty("visibility", "hidden", "important");
+    btn.style.setProperty("pointer-events", "none", "important");
+    return true;
+  }
+  return false;
+}
+
+/* ── Click native HL Continue button programmatically ── */
+function gaClickNativeContinue() {
+  var btn = document.getElementById("schedule-meeting-button") ||
+            document.querySelector(".btn-schedule") ||
+            document.querySelector(".btn.btn-schedule");
+  if (btn) {
+    btn.style.removeProperty("display");
+    btn.style.removeProperty("visibility");
+    btn.style.removeProperty("pointer-events");
+    btn.click();
+    setTimeout(gaHideNativeContinue, 500);
+    return true;
+  }
+  return false;
+}
+
+/* ── Boot: hide the button as soon as it appears in DOM ── */
+(function () {
+  var tries = 0;
+  (function attempt() {
+    tries++;
+    if (gaHideNativeContinue()) return;
+    if (tries < 60) setTimeout(attempt, 150);
+  })();
+})();
+
 /* ── Shared styles ── */
 (function () {
   if (document.getElementById("ga-shared-styles")) return;
@@ -217,7 +257,7 @@ function gaSendToParent(type, payload) {
     function renderRed() {
       bar.className = "ga-card red";
       showCont(false);
-      bar.innerHTML = '📞 <b>Please add your ' + missing() + '</b> so your technician can reach you.';
+      bar.innerHTML = '📞 Please add your <b>' + missing() + '</b>';
       setBadge("active");
     }
 
@@ -624,7 +664,16 @@ function gaSendToParent(type, payload) {
       el.dispatchEvent(new Event("change", { bubbles: true }));
     });
     setTimeout(function () {
-      gaSendToParent("ga:submit_continue", { service: serviceValue });
+      var clicked = gaClickNativeContinue();
+      if (!clicked) {
+        /* Fallback: retry a few times */
+        var t = 0;
+        (function retry() {
+          t++;
+          if (gaClickNativeContinue()) return;
+          if (t < 10) setTimeout(retry, 200);
+        })();
+      }
     }, 300);
   }
 
